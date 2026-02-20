@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int getGradePoint(string grade) {
+    if (grade == "O" || grade == "o") return 10;
+    else if (grade == "A+" || grade == "a+") return 9;
+    else if (grade == "A" || grade == "a") return 8;
+    else if (grade == "B+" || grade == "b+") return 7;
+    else if (grade == "B" || grade == "b") return 6;
+    else if (grade == "C+" || grade == "c+") return 5;
+    else if (grade == "C" || grade == "c") return 4;
+    else if (grade == "F" || grade == "f") return 0;
+    else return -1;
+}
+
+int main() {
+    int semesters;
+    cout << "Enter number of semesters: ";
+    cin >> semesters;
+    float overallCredits = 0, overallPoints = 0;
+    for (int s = 1; s <= semesters; s++) {
+        cout << "\nSemester: " << s << " \n";
+        int n;
+        cout << "Enter number of courses: ";
+        cin >> n;
+        float semCredits = 0, semPoints = 0;
+        string course, grade;
+        float credits;
+        cin.ignore();
+        for (int i = 1; i <= n; i++) {
+            cout << "\nCourse " << i << " name: ";
+            getline(cin, course);
+            cout << "Enter credit hours: ";
+            cin >> credits;
+            cout << "Enter grade (O, A+, A, B+, B, C+, C, F): ";
+            cin >> grade;
+            int gp = getGradePoint(grade);
+            if (gp == -1) {
+                cout << "Invalid grade! Re-enter this course.\n";
+                i--;
+                cin.ignore();
+                continue;
+            }
+            float points = gp * credits;
+            semCredits += credits;
+            semPoints += points;
+            cout << "Grade Points Earned: " << points << endl;
+            cin.ignore();
+        }
+        float semesterGPA = semPoints / semCredits;
+        cout << "\nSemester " << s << " GPA: " << semesterGPA << endl;
+        overallCredits += semCredits;
+        overallPoints += semPoints;
+    }
+    float cgpa = overallPoints / overallCredits;
+    cout << "\nFINAL RESULT: \n";
+    cout << "Overall CGPA: " << cgpa << endl;
+    return 0;
+}
