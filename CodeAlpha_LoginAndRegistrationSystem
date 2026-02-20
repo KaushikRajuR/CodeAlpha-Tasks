@@ -1,0 +1,65 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+bool userExists(const string& username) {
+    ifstream file("users.txt");
+    string u, p;
+    while (file >> u >> p) {
+        if (u == username) return true;
+    }
+    return false;
+}
+
+void registerUser() {
+    string username, password;
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter password: ";
+    cin >> password;
+    if (username.empty() || password.empty()) {
+        cout << "Error: Username or password cannot be empty.\n";
+        return;
+    }
+    if (userExists(username)) {
+        cout << "Error: Username already exists.\n";
+        return;
+    }
+    ofstream file("users.txt", ios::app);
+    file << username << " " << password << endl;
+    cout << "Registration successful.\n";
+}
+
+void loginUser() {
+    string username, password;
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter password: ";
+    cin >> password;
+    ifstream file("users.txt");
+    string u, p;
+    while (file >> u >> p) {
+        if (u == username && p == password) {
+            cout << "Login successful. Welcome, " << username << "!\n";
+            return;
+        }
+    }
+    cout << "Error: Invalid username or password.\n";
+}
+
+int main() {
+    int choice;
+    do {
+        cout << "\n1. Register\n2. Login\n3. Exit\nEnter choice: ";
+        cin >> choice;
+        switch (choice) {
+            case 1: registerUser(); break;
+            case 2: loginUser(); break;
+            case 3: cout << "Exiting...\n"; break;
+            default: cout << "Invalid choice.\n";
+        }
+    } 
+	  while (choice != 3);
+    return 0;
+}
